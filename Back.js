@@ -1,16 +1,15 @@
-const ethers = require('ethers');
+const ethers  = require('ethers');
 const express = require('express');
-const sha3 = require('sha3');
 
 const app = express();
-const port = 3000;
+const port = 3000; //FIXME
 
-const privateKey = "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d";
+const privateKey = "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d"; //FIXME
 const wallet     = new ethers.Wallet(privateKey);
-const valueInETH = "0.001";
-const gasLimit   = "53000";
+const valueInETH = "0.001"; //FIXME
+const gasLimit   = "53000"; //FIXME
 //const provider   = ethers.getDefaultProvider('rinkeby');    
-const provider   = new ethers.providers.JsonRpcProvider();// Default: http://localhost:8545
+const provider   = new ethers.providers.JsonRpcProvider();// Default: http://localhost:8545 //FIXME
 
 app.get('/requestEth/:addressto',function( _req , _res ){
     const addressto = _req.params.addressto;
