@@ -1,5 +1,8 @@
 const ethers  = require('ethers');
 const express = require('express');
+const pdflib  = require('pdf-lib');
+var fs        = require('fs');
+var os        = require('os');
 
 const app = express();
 const port = 3000; //FIXME
@@ -10,6 +13,51 @@ const valueInETH = "0.001"; //FIXME
 const gasLimit   = "53000"; //FIXME
 //const provider   = ethers.getDefaultProvider('rinkeby');    
 const provider   = new ethers.providers.JsonRpcProvider();// Default: http://localhost:8545 //FIXME
+
+app.get('/generatepdf/:addressto', async function( _req , _res ){
+    const addressto = _req.params.addressto;
+    console.log('/generatepdf/' + addressto )    
+    const filePath = await generatePDFwithMetaData(addressto);
+    
+    fs.readFile(filePath, function(err, data) {
+        _res.writeHead(200, {'Content-Type': 'application/pdf'});
+        _res.write(data);
+        _res.end();
+    }); 
+});
+
+async function generatePDFwithMetaData(_addressto) {
+  const pdfDoc = await pdflib.PDFDocument.create()
+  const timesRomanFont = await pdfDoc.embedFont(pdflib.StandardFonts.TimesRoman)
+  
+  const page = pdfDoc.addPage([500, 600])
+  page.setFont(timesRomanFont)
+  page.drawText('Declaração', { x: 60, y: 500, size: 50 })
+  page.drawText('Dono é ' + _addressto, { x: 125, y: 460, size: 25 })
+  
+  // Note that these fields are visible in the "Document Properties" section of 
+  // most PDF readers.
+  pdfDoc.setTitle('🥚 The Life of an Egg 🍳')
+  pdfDoc.setAuthor('Humpty Dumpty')
+  pdfDoc.setSubject('📘 An Epic Tale of Woe 📖')
+  pdfDoc.setKeywords(['eggs', 'wall', 'fall', 'king', 'horses', 'men'])
+  pdfDoc.setProducer('PDF App 9000 🤖')
+  pdfDoc.setCreator('pdf-lib (https://github.com/Hopding/pdf-lib)')
+  pdfDoc.setCreationDate(new Date('2018-06-24T01:58:37.228Z'))
+  pdfDoc.setModificationDate(new Date('2019-12-21T07:00:11.000Z'))
+  
+  const pdfBytes = await pdfDoc.save()
+
+  const path = writePdfToTmp(pdfBytes);
+  console.log(`> PDF file written to: ${path}`);
+  return path;
+}
+
+function writePdfToTmp( _pdf ) {
+  const path = `${os.tmpdir()}/${Date.now()}.pdf`;
+  fs.writeFileSync(path, _pdf);
+  return path;
+};
 
 app.get('/requestEth/:addressto',function( _req , _res ){
     const addressto = _req.params.addressto;

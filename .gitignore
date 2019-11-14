@@ -15,6 +15,8 @@ src/assets/web3.min.js
 
 # dependencies
 /node_modules
+/Back/node_modules
+/Front/node_modules
 
 # IDEs and editors
 /.idea
