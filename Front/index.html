@@ -1,22 +1,48 @@
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <script src="https://unpkg.com/pdf-lib"></script>
-  </head>
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+  crossorigin="anonymous">
 
-  <body>
-    <iframe id="pdf" style="width: 100%; height: 100%;"></iframe>
-  </body>
 
-  <script>
-    createPdf();
-    async function createPdf() {
-      const pdfDoc = await PDFLib.PDFDocument.create();
-      const page = pdfDoc.addPage([350, 400]);
-      page.moveTo(110, 200);
-      page.drawText('Hello World!');
-      const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
-      document.getElementById('pdf').src = pdfDataUri;
-    }
-  </script>
-</html>
+<script language="javascript">
+    function requestEth() {
+        var address = document.getElementById('address').value        
+        window.open('http://localhost:3000/requestEth/' + address , "_blank")
+    }    
+    function generateDoc() {
+        var address = document.getElementById('address').value        
+        window.open('http://localhost:3000/generatepdf/' + address , "_blank")
+    }        
+</script>
+
+    <div class="row">
+      <div class="py-5 text-center col-md-12">
+        <img class="d-block mx-auto mb-4" src="img/logo-bndescoin.png" alt="" width="72" height="72">
+        <h2>BNDESToken - D</h2>
+      </div>
+    </div>
+    <div class="row">
+    <div class="col-md-4"> </div>
+    <div class="col-md-4"> <input type="text" id="address" size="69" value="0xFE3B557E8Fb62b89F4916B721be55cEb828dBd73"></div>
+    <div class="col-md-4"> </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12"><br> </div>    
+    </div>    
+    <div class="row">
+      <div class="col-md-4"> </div>
+      <div class="col-md-2">
+        <a href="javascript:requestEth()" >
+        <button type="button" class="btn btn-success btn-lg btn-block">
+            Send Ether
+        </button>
+        </a>
+      </div>
+      <div class="col-md-2">
+        <a href="javascript:generateDoc()">
+        <button type="button" class="btn btn-success btn-lg btn-block">
+            Generate Declaration
+        </button>
+        </a>
+      </div>
+      <div class="col-md-4"> </div>
+    </div>      

@@ -32,19 +32,19 @@ async function generatePDFwithMetaData(_addressto) {
   
   const page = pdfDoc.addPage([500, 600])
   page.setFont(timesRomanFont)
-  page.drawText('Declaração', { x: 60, y: 500, size: 50 })
-  page.drawText('Dono é ' + _addressto, { x: 125, y: 460, size: 25 })
+  page.drawText('Declaração', { x: 60, y: 500, size: 25 })
+  page.drawText('Dono é ' + _addressto, { x: 60, y: 460, size: 15 })
   
   // Note that these fields are visible in the "Document Properties" section of 
   // most PDF readers.
-  pdfDoc.setTitle('🥚 The Life of an Egg 🍳')
-  pdfDoc.setAuthor('Humpty Dumpty')
-  pdfDoc.setSubject('📘 An Epic Tale of Woe 📖')
-  pdfDoc.setKeywords(['eggs', 'wall', 'fall', 'king', 'horses', 'men'])
-  pdfDoc.setProducer('PDF App 9000 🤖')
+  pdfDoc.setTitle('Declaração de uso do BNDESToken')
+  pdfDoc.setAuthor('BNDES')
+  pdfDoc.setSubject('Definir direitos e deveres do usuário do BNDESToken')
+  pdfDoc.setKeywords(['bndestoken', 'bndes', 'blockchain', 'token', 'dlt'])
+  pdfDoc.setProducer('')
   pdfDoc.setCreator('pdf-lib (https://github.com/Hopding/pdf-lib)')
-  pdfDoc.setCreationDate(new Date('2018-06-24T01:58:37.228Z'))
-  pdfDoc.setModificationDate(new Date('2019-12-21T07:00:11.000Z'))
+  pdfDoc.setCreationDate(new Date())
+  pdfDoc.setModificationDate(new Date())
   
   const pdfBytes = await pdfDoc.save()
 
