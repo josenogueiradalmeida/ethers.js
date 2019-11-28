@@ -74,6 +74,38 @@ app.get('/requestEth/:addressto',function( _req , _res ){
     _res.end();    
 });
 
+app.get('/loginunico',function( _req , _res ){
+    var response_type = "code";
+    var client_id = "token-h.bndes.gov.br";
+    //var redirect_uri = "http%3A%2F%2Flocalhost%3A3000%2Floginunico%2Fautorizado";
+    //var scope  = "openid+email+phone+profile";
+    //var nonce = Math.abs ( Math.random()*100000 ) ;
+    //var state = "";
+
+    var url = "https://sso.staging.acesso.gov.br/authorize?"
+                  + "response_type="     + response_type
+                  + "&client_id="        + client_id 
+                  //+ "&scope="            + scope 
+                  //+ "&redirect_uri="     + redirect_uri 
+                  //+ "&nonce="            + nonce  
+                  //+ "&state="            + state 
+
+    _res.redirect(url);
+
+});
+
+app.get('/loginunico/autorizado/:code/:state',function( _req , _res ){
+    const code  = _req.params.code;
+    const state = _req.params.state;
+    console.log('/loginunico/autorizado/' + code )
+    console.log('/loginunico/autorizado/' + state )
+    
+    _res.send("Response: " + code + " | " + state);    
+    _res.end();   
+
+});
+    
+
 function requestETH( _addressto ) {    
     var gasPricePromise         = provider.getGasPrice();
     var balancePromise          = provider.getBalance(wallet.address);    

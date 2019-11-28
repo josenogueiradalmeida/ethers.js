@@ -17,12 +17,20 @@ export class MainComponent implements OnInit {
 
   requestEth() {
       console.log(this.address);
-      window.open('http://localhost:3000/requestEth/' + this.address , "_blank")
+      window.open('http://localhost:3000/requestEth/' + this.address , "_blank");
   }    
 
   generateDoc() {
       console.log(this.address);
-      window.open('http://localhost:3000/generatepdf/' + this.address , "_blank")
+      window.open('http://localhost:3000/generatepdf/' + this.address , "_blank");
   }  
+
+  signDeclaration() {
+    alert("Implementar")
+  }
+
+  loginUnico() {
+    window.open('http://localhost:3000/loginunico/', "_blank");
+  }
 
 }
