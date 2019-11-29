@@ -3,6 +3,9 @@ const express = require('express');
 const pdflib  = require('pdf-lib');
 var fs        = require('fs');
 var os        = require('os');
+var request   = require('request');
+
+var config    = require('./config.json');
 
 const app = express();
 const port = 3000; //FIXME
@@ -77,34 +80,63 @@ app.get('/requestEth/:addressto',function( _req , _res ){
 app.get('/loginunico',function( _req , _res ){
     var response_type = "code";
     var client_id = "token-h.bndes.gov.br";
-    //var redirect_uri = "http%3A%2F%2Flocalhost%3A3000%2Floginunico%2Fautorizado";
-    //var scope  = "openid+email+phone+profile";
-    //var nonce = Math.abs ( Math.random()*100000 ) ;
+    var redirect_uri = "https%3A%2F%2Ftoken-h.bndes.gov.br";
+    var scope  = "openid+email+phone+profile";
+    var nonce = Math.round ( Math.random()*100000 ) ;
     //var state = "";
 
     var url = "https://sso.staging.acesso.gov.br/authorize?"
                   + "response_type="     + response_type
                   + "&client_id="        + client_id 
-                  //+ "&scope="            + scope 
-                  //+ "&redirect_uri="     + redirect_uri 
-                  //+ "&nonce="            + nonce  
-                  //+ "&state="            + state 
+                  + "&scope="            + scope 
+                  // + "&redirect_uri="     + redirect_uri 
+                  // + "&nonce="            + nonce  
+                  // + "&state="            + state 
 
     _res.redirect(url);
 
 });
 
-app.get('/loginunico/autorizado/:code/:state',function( _req , _res ){
+//app.get('/loginunico/autorizado/:code/:state',function( _req , _res ){
+app.get('/loginunico/autorizado/:code',function( _req , _res ){
     const code  = _req.params.code;
-    const state = _req.params.state;
+    //const state = _req.params.state;
     console.log('/loginunico/autorizado/' + code )
-    console.log('/loginunico/autorizado/' + state )
+    //console.log('/loginunico/autorizado/' + state )
     
-    _res.send("Response: " + code + " | " + state);    
-    _res.end();   
+    //_res.send("Response: " + code + " | " + state);    
+    console.log("Code: " + code );    
 
-});
-    
+    var redirect_uri = "https%3A%2F%2Ftoken-h.bndes.gov.br";
+    var url = "https://sso.staging.acesso.gov.br/token?" +
+              "grant_type=authorization_code" + 
+              "&code=" + code + 
+              "&redirect_uri=" + redirect_uri;
+
+    //acessar via POST o https://sso.staging.acesso.gov.br/token com o code
+
+    console.log("URL : " + url);
+    let data = config.CLIENT_ID + ":" + config.CLIENT_SECRET;
+    let buff = Buffer.from(data);
+    let base64data = buff.toString('base64');
+
+    console.log( data )
+    console.log( base64data );
+    console.log();
+
+    request.post({ headers: 
+                    { 'content-type'  : 'application/x-www-form-urlencoded',
+                      'Authorization' : 'Basic ' + base64data
+                    }, 
+                    url: url, 
+                 }, function(error, response, body){
+                        console.log(error);
+                        console.log();
+                        console.log(response);
+                        console.log();
+                        console.log(body); 
+                    });
+                });
 
 function requestETH( _addressto ) {    
     var gasPricePromise         = provider.getGasPrice();

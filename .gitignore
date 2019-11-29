@@ -3,6 +3,8 @@
 # embora digam para colocar no source repository, decidimos não colocar
 package-lock.json
 
+/Back/config.json
+
 #meus
 src/assets/bootstrap.min.js
 src/assets/truffle-contract.js

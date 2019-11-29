@@ -33,4 +33,8 @@ export class MainComponent implements OnInit {
     window.open('http://localhost:3000/loginunico/', "_blank");
   }
 
+  loginUnicoRetorno() {
+    window.open('http://localhost:3000/loginunico/autorizado/' + this.address, "_blank");
+  }  
+
 }
